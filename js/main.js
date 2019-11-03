@@ -1,3 +1,6 @@
+window.onload = function(e){
+    loadBoard();
+}
 const addBoardBtn = document.querySelector('#add-board');
 const container = document.querySelector('.container');
 addBoardBtn.addEventListener('click', addNewBoard);
@@ -18,11 +21,11 @@ function addNewBoard(event){
     `;
     board.setAttribute('data-target', 'dropzone');
     this.parentElement.insertBefore(board, this);
+    saveBoard();
 }
 
 window.addEventListener('click', function(event){
     let target = event.target;
-    console.log(event.target);
     if(target.classList.contains('btn-add-task')){
         let taskInput = target.previousElementSibling;
         
@@ -37,8 +40,8 @@ window.addEventListener('click', function(event){
             return false;
         }        
     }else if(target.classList.contains('delete-btn')){
-        console.log('delete');
         target.parentElement.remove();
+        saveBoard();
     }   
 });
 window.addEventListener('keypress', function(e){
@@ -64,6 +67,7 @@ function addNewTask(name, list){
     task.innerHTML = name;
     task.innerHTML+=`<button class="delete-btn">&times;</button>`;
     list.appendChild(task);    
+    saveBoard();
 }
 
 window.addEventListener('dragstart', onDragstart);
@@ -97,11 +101,12 @@ function onDrop(event){
     if(target.closest('.trash')){
         target.closest('.trash').classList.remove('trash-hover');
         task.remove();
+        saveBoard();
     }else if(target.closest('.board') && 
     (task.closest('.board') !== target.closest('.board'))){
-        console.log('drop');        
         target.closest('.board').querySelector('.tasks__list').appendChild(task);
         task.removeAttribute('data-target');
+        saveBoard();
     }else {
         return;
     }
@@ -123,4 +128,32 @@ function onDragleave(event){
    if(event.target == document.querySelector('.trash i')){
         document.querySelector('.trash').classList.remove('trash-hover');
    }
+}
+
+function saveBoard(){
+    let storage = [];
+    let boards = document.querySelectorAll('.board');
+    if (boards){
+        for (let i = 0; i < boards.length; i++){
+            storage.push(boards[i].innerHTML);
+        }
+    }
+    localStorage.clear();
+    for(let i = 0; i < storage.length; i++){
+        localStorage.setItem(i, storage[i]);
+        console.log(storage[i]);
+    }
+}
+
+function loadBoard(){
+    let addBtn = document.querySelector('.btn-add-board');
+    
+    for (let i = 0; i < localStorage.length; i++){
+        let board = document.createElement('div');
+        board.classList = 'board shadow';
+        board.innerHTML = localStorage.getItem(i);
+        board.setAttribute('data-target', 'dropzone');
+        console.log(board);
+        addBtn.parentElement.insertBefore(board, addBtn);
+    }
 }
