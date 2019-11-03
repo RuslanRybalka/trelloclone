@@ -14,15 +14,15 @@ function addNewBoard(event){
         <ul class="tasks__list">
             
         </ul>
+        <button class="delete-btn">&times;</button>
     `;
     board.setAttribute('data-target', 'dropzone');
     this.parentElement.insertBefore(board, this);
-
-    console.log('add new board')
 }
 
 window.addEventListener('click', function(event){
     let target = event.target;
+    console.log(event.target);
     if(target.classList.contains('btn-add-task')){
         let taskInput = target.previousElementSibling;
         
@@ -35,9 +35,11 @@ window.addEventListener('click', function(event){
             taskInput.value = '';
             taskInput.focus();
             return false;
-        }
-        
-    }
+        }        
+    }else if(target.classList.contains('delete-btn')){
+        console.log('delete');
+        target.parentElement.remove();
+    }   
 });
 window.addEventListener('keypress', function(e){
     if ((e.keyCode == 13) && (e.target.classList.contains('add-task-field'))){
@@ -60,7 +62,8 @@ function addNewTask(name, list){
     task.classList = 'tasks__item shadow';
     task.setAttribute('draggable', 'true');
     task.innerHTML = name;
-    list.appendChild(task);
+    task.innerHTML+=`<button class="delete-btn">&times;</button>`;
+    list.appendChild(task);    
 }
 
 window.addEventListener('dragstart', onDragstart);
@@ -69,13 +72,14 @@ window.addEventListener('drop', onDrop);
 window.addEventListener('dragend', onDragend);
 
 function onDragstart(event){
-    event.preventDefault;
     let target = event.target;
+    if(!target.classList.contains('tasks__item')){
+        return;
+    }
     target.setAttribute('data-target', 'drag');
     target.classList.add('draged');
     let data = target.getAttribute('data-target');
     event.dataTransfer.setData('text', data);
-    console.log('dragStart');
 }
 function onDragend(event){
     event.target.classList.remove('draged');
@@ -87,20 +91,36 @@ function onDragover(event){
 }
 function onDrop(event){
     event.preventDefault();
-    let target = event.target.closest('.board');
+    let target = event.target;
 
     let task = document.querySelector('[data-target="drag"]');
-
-    if(target.getAttribute('data-target') == 'dropzone' && 
-    (task.closest('.board') !== target)){
-        console.log('drop');        
-        target.querySelector('.tasks__list').appendChild(task);
-        task.removeAttribute('data-target');
-    }else if(target.getAttribute('data-target') == 'trash'){
-        console.log('trash')
+    if(target.closest('.trash')){
+        target.closest('.trash').classList.remove('trash-hover');
         task.remove();
+    }else if(target.closest('.board') && 
+    (task.closest('.board') !== target.closest('.board'))){
+        console.log('drop');        
+        target.closest('.board').querySelector('.tasks__list').appendChild(task);
+        task.removeAttribute('data-target');
+    }else {
+        return;
     }
-    else{
-        return false;
+}
+
+
+window.addEventListener('dragenter', onDragenter);
+window.addEventListener('dragleave', onDragleave);
+
+function onDragenter(event){
+    event.preventDefault();
+    if(event.target == document.querySelector('.trash i')){
+        document.querySelector('.trash').classList.add('trash-hover');
     }
+}
+
+function onDragleave(event){
+    event.preventDefault();
+   if(event.target == document.querySelector('.trash i')){
+        document.querySelector('.trash').classList.remove('trash-hover');
+   }
 }
