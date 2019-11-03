@@ -87,6 +87,7 @@ function onDragstart(event){
 }
 function onDragend(event){
     event.target.classList.remove('draged');
+    savecard();
 }
 
 function onDragover(event){
@@ -101,12 +102,10 @@ function onDrop(event){
     if(target.closest('.trash')){
         target.closest('.trash').classList.remove('trash-hover');
         task.remove();
-        savecard();
     }else if(target.closest('.card') && 
     (task.closest('.card') !== target.closest('.card'))){
         target.closest('.card').querySelector('.tasks__list').appendChild(task);
         task.removeAttribute('data-target');
-        savecard();
     }else {
         return;
     }
@@ -141,7 +140,6 @@ function savecard(){
     localStorage.clear();
     for(let i = 0; i < storage.length; i++){
         localStorage.setItem(i, storage[i]);
-        console.log(storage[i]);
     }
 }
 
@@ -153,7 +151,6 @@ function loadcard(){
         card.classList = 'card shadow';
         card.innerHTML = localStorage.getItem(i);
         card.setAttribute('data-target', 'dropzone');
-        console.log(card);
         addBtn.parentElement.insertBefore(card, addBtn);
     }
 }
