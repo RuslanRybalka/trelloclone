@@ -1,15 +1,15 @@
 window.onload = function(e){
-    loadBoard();
+    loadcard();
 }
-const addBoardBtn = document.querySelector('#add-board');
+const addcardBtn = document.querySelector('#add-card');
 const container = document.querySelector('.container');
-addBoardBtn.addEventListener('click', addNewBoard);
+addcardBtn.addEventListener('click', addNewcard);
 
-function addNewBoard(event){
-    let board = document.createElement('div');
-    board.classList = 'board shadow';
-    board.innerHTML = `
-        <h3 class="board__title" contenteditable="true">New board</h3>
+function addNewcard(event){
+    let card = document.createElement('div');
+    card.classList = 'card shadow';
+    card.innerHTML = `
+        <h3 class="card__title" contenteditable="true">New card</h3>
         <div class="input-field shadow">
             <input type="text" placeholder="Type new task..."class="add-task-field">
             <button class="btn btn-add-task">Add</button>
@@ -19,9 +19,9 @@ function addNewBoard(event){
         </ul>
         <button class="delete-btn">&times;</button>
     `;
-    board.setAttribute('data-target', 'dropzone');
-    this.parentElement.insertBefore(board, this);
-    saveBoard();
+    card.setAttribute('data-target', 'dropzone');
+    this.parentElement.insertBefore(card, this);
+    savecard();
 }
 
 window.addEventListener('click', function(event){
@@ -30,7 +30,7 @@ window.addEventListener('click', function(event){
         let taskInput = target.previousElementSibling;
         
         let taskName = taskInput.value;
-        let list = target.closest('.board').querySelector('.tasks__list');
+        let list = target.closest('.card').querySelector('.tasks__list');
         if(taskName.trim().length > 0){
             addNewTask(taskName, list);
             taskInput.value = '';
@@ -41,14 +41,14 @@ window.addEventListener('click', function(event){
         }        
     }else if(target.classList.contains('delete-btn')){
         target.parentElement.remove();
-        saveBoard();
+        savecard();
     }   
 });
 window.addEventListener('keypress', function(e){
     if ((e.keyCode == 13) && (e.target.classList.contains('add-task-field'))){
         let target = event.target;        
         let taskName = target.value;
-        let list = target.closest('.board').querySelector('.tasks__list');
+        let list = target.closest('.card').querySelector('.tasks__list');
         if(taskName.trim().length > 0){
             addNewTask(taskName, list);
             target.value = '';
@@ -67,7 +67,7 @@ function addNewTask(name, list){
     task.innerHTML = name;
     task.innerHTML+=`<button class="delete-btn">&times;</button>`;
     list.appendChild(task);    
-    saveBoard();
+    savecard();
 }
 
 window.addEventListener('dragstart', onDragstart);
@@ -101,12 +101,12 @@ function onDrop(event){
     if(target.closest('.trash')){
         target.closest('.trash').classList.remove('trash-hover');
         task.remove();
-        saveBoard();
-    }else if(target.closest('.board') && 
-    (task.closest('.board') !== target.closest('.board'))){
-        target.closest('.board').querySelector('.tasks__list').appendChild(task);
+        savecard();
+    }else if(target.closest('.card') && 
+    (task.closest('.card') !== target.closest('.card'))){
+        target.closest('.card').querySelector('.tasks__list').appendChild(task);
         task.removeAttribute('data-target');
-        saveBoard();
+        savecard();
     }else {
         return;
     }
@@ -130,12 +130,12 @@ function onDragleave(event){
    }
 }
 
-function saveBoard(){
+function savecard(){
     let storage = [];
-    let boards = document.querySelectorAll('.board');
-    if (boards){
-        for (let i = 0; i < boards.length; i++){
-            storage.push(boards[i].innerHTML);
+    let cards = document.querySelectorAll('.card');
+    if (cards){
+        for (let i = 0; i < cards.length; i++){
+            storage.push(cards[i].innerHTML);
         }
     }
     localStorage.clear();
@@ -145,15 +145,15 @@ function saveBoard(){
     }
 }
 
-function loadBoard(){
-    let addBtn = document.querySelector('.btn-add-board');
+function loadcard(){
+    let addBtn = document.querySelector('.btn-add-card');
     
     for (let i = 0; i < localStorage.length; i++){
-        let board = document.createElement('div');
-        board.classList = 'board shadow';
-        board.innerHTML = localStorage.getItem(i);
-        board.setAttribute('data-target', 'dropzone');
-        console.log(board);
-        addBtn.parentElement.insertBefore(board, addBtn);
+        let card = document.createElement('div');
+        card.classList = 'card shadow';
+        card.innerHTML = localStorage.getItem(i);
+        card.setAttribute('data-target', 'dropzone');
+        console.log(card);
+        addBtn.parentElement.insertBefore(card, addBtn);
     }
 }

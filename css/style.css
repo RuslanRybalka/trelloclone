@@ -67,7 +67,7 @@ body{
     -webkit-box-shadow:0 2px 3px rgba(31,31,48,.6);
     box-shadow:0 2px 3px rgba(31,31,48,.6)
 }
-.board{
+.card{
     padding: 10px;
     background-color: #33d9b2;
     text-align: center;
@@ -79,7 +79,7 @@ body{
     position: relative;
 }
 
-.board__title{
+.card__title{
     font-size: 20px;
     color: #313131;
     display: block;
@@ -156,7 +156,7 @@ body{
     border-radius: 3px;
     background-color: #ffda79;
 }
-.btn-add-board{
+.btn-add-card{
     -ms-flex-item-align: center;
         -ms-grid-row-align: center;
         align-self: center;
