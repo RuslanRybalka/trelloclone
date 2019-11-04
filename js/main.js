@@ -42,7 +42,9 @@ window.addEventListener('click', function(event){
     }else if(target.classList.contains('delete-btn')){
         target.parentElement.remove();
         savecard();
-    }   
+    }else if(target.classList.contains('complete-btn')){
+        target.parentElement.classList.toggle('completed');
+    }
 });
 window.addEventListener('keypress', function(e){
     if ((e.keyCode == 13) && (e.target.classList.contains('add-task-field'))){
@@ -65,7 +67,9 @@ function addNewTask(name, list){
     task.classList = 'tasks__item shadow';
     task.setAttribute('draggable', 'true');
     task.innerHTML = name;
-    task.innerHTML+=`<button class="delete-btn">&times;</button>`;
+    task.innerHTML+=`<button class="delete-btn">&times;</button>
+                     <button class="complete-btn">&#10004;</button>
+                    `;
     list.appendChild(task);    
     savecard();
 }

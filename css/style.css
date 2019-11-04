@@ -65,7 +65,7 @@ body{
 
 .shadow{
     -webkit-box-shadow:0 2px 3px rgba(31,31,48,.6);
-    box-shadow:0 2px 3px rgba(31,31,48,.6)
+    box-shadow:0 2px 3px rgba(31,31,48,.6), inset 0 1px 0px white;
 }
 .card{
     padding: 10px;
@@ -151,10 +151,12 @@ body{
     position: relative;
     padding: 10px 20px;
     width: 100%;
+    word-wrap: break-word;
     font-size: 16px;
     margin-bottom: 10px;
     border-radius: 3px;
     background-color: #ffda79;
+    cursor: pointer;
 }
 .btn-add-card{
     -ms-flex-item-align: center;
@@ -183,6 +185,7 @@ body{
         -ms-transform: translateY(-50%);
             transform: translateY(-50%);
 }
+
 .trash i{
     width: 100%;
     height: 100%;
@@ -209,6 +212,17 @@ body{
     background: transparent;
     border: none;
     cursor: pointer;
+}
+.complete-btn{
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+}
+.completed{
+    background-color: #c8d6e5;
 }
 @media screen and (max-width: 1400px){
     .trash{
