@@ -111,6 +111,7 @@ function onDrop(event){
         target.closest('.card').querySelector('.tasks__list').appendChild(task);
         task.removeAttribute('data-target');
     }else {
+        task.removeAttribute('data-target');
         return;
     }
 }
